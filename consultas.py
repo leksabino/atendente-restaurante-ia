@@ -28,10 +28,14 @@ def listar_pratos() -> list[dict]:
 
 def buscar_prato(nome: str) -> list[dict]:
     """Busca pratos pelo nome (ou parte do nome). Devolve ingredientes, alergênicos, preço em centavos, tempo de preparo e se é vegano ou vegetariano. Devolve lista vazia se o prato não existe no cardápio."""
+    palavras = _sem_acento(nome).split()
+    if not palavras:
+        return []
+    condicoes = " AND ".join(["sem_acento(nome) LIKE ?"] * len(palavras))
+    parametros = [f"%{palavra}%" for palavra in palavras]
     con = _conectar()
     linhas = con.execute(
-        "SELECT * FROM pratos WHERE sem_acento(nome) LIKE ?",
-        (f"%{_sem_acento(nome)}%",),
+        f"SELECT * FROM pratos WHERE {condicoes}", parametros
     ).fetchall()
     con.close()
     return [dict(linha) for linha in linhas]
