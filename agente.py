@@ -16,7 +16,12 @@ config = types.GenerateContentConfig(
 
 resposta = client.models.generate_content(
     model=MODELO,
-    contents="Me fala todos os pratos que vocês têm.",
+    contents="Quanto custa o hamburguer?",
     config=config,
 )
 print(resposta.text)
+
+for conteudo in resposta.automatic_function_calling_history or []:
+    for parte in conteudo.parts:
+        if parte.function_call:
+            print("Chamou:", parte.function_call.name, dict(parte.function_call.args))
