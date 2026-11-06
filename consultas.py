@@ -47,3 +47,15 @@ def pegar_prato(id_prato: int):
     ).fetchone()
     con.close()
     return dict(linha) if linha else None
+
+def filtrar_por_dieta(dieta: str) -> list[dict]:
+    """Lista os pratos que atendem a uma dieta. O parâmetro dieta deve ser 'vegano' ou 'vegetariano'. Devolve id, nome, categoria e preço em centavos."""
+    dieta = _sem_acento(dieta)
+    if dieta not in ("vegano", "vegetariano"):
+        return []
+    con = _conectar()
+    linhas = con.execute(
+        f"SELECT id, nome, categoria, preco_centavos FROM pratos WHERE {dieta} = 1"
+    ).fetchall()
+    con.close()
+    return [dict(linha) for linha in linhas]
