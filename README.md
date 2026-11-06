@@ -42,7 +42,7 @@ O sanduíche de pernil, que a primeira versão inventou, passou a ser recusado.
 
 - `chatbot.py`: o chatbot
 - `cardapio.py`: os dados do cardápio (lista de dicionários)
-- `teste.py`: a primeira chamada ao modelo, com retry
+- `exemplo_api.py`: a primeira chamada ao modelo, com retry
 - `listar_modelos.py`: lista os modelos disponíveis para a minha chave
 
 ## Como rodar
