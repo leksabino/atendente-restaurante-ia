@@ -1,11 +1,18 @@
 import sqlite3
+import unicodedata
 
 CAMINHO_BANCO = "restaurante.db"
+
+def _sem_acento(texto):
+    decomposto = unicodedata.normalize("NFD", texto)
+    sem_marcas = "".join(c for c in decomposto if unicodedata.category(c) != "Mn")
+    return sem_marcas.lower()
 
 
 def _conectar():
     con = sqlite3.connect(CAMINHO_BANCO)
     con.row_factory = sqlite3.Row
+    con.create_function("sem_acento", 1, _sem_acento)
     return con
 
 
@@ -23,8 +30,8 @@ def buscar_prato(nome: str) -> list[dict]:
     """Busca pratos pelo nome (ou parte do nome). Devolve ingredientes, alergênicos, preço em centavos, tempo de preparo e se é vegano ou vegetariano. Devolve lista vazia se o prato não existe no cardápio."""
     con = _conectar()
     linhas = con.execute(
-        "SELECT * FROM pratos WHERE nome LIKE ?",
-        (f"%{nome}%",),
+        "SELECT * FROM pratos WHERE sem_acento(nome) LIKE ?",
+        (f"%{_sem_acento(nome)}%",),
     ).fetchall()
     con.close()
     return [dict(linha) for linha in linhas]
