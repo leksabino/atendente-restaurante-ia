@@ -35,3 +35,11 @@ def buscar_prato(nome: str) -> list[dict]:
     ).fetchall()
     con.close()
     return [dict(linha) for linha in linhas]
+
+def pegar_prato(id_prato: int):
+    con = _conectar()
+    linha = con.execute(
+        "SELECT * FROM pratos WHERE id = ?", (id_prato,)
+    ).fetchone()
+    con.close()
+    return dict(linha) if linha else None
