@@ -1,4 +1,5 @@
 .env
 .venv/
 .vscode/
+restaurante.db
 __pycache__/
