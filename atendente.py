@@ -3,9 +3,8 @@ import time
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types, errors
-from consultas import listar_pratos, buscar_prato
-from pedido import adicionar_ao_pedido, ver_pedido
 from consultas import listar_pratos, buscar_prato, filtrar_por_dieta
+from pedido import adicionar_ao_pedido, ver_pedido
 
 load_dotenv()
 
@@ -42,16 +41,21 @@ def perguntar(texto):
     return None
 
 
-print("Atendente pronto. Digite 'sair' para encerrar.")
+def main():
+    print("Atendente pronto. Digite 'sair' para encerrar.")
 
-while True:
-    texto = input("Você: ").strip()
-    if texto.lower() == "sair":
-        break
-    if not texto:
-        continue
-    resposta = perguntar(texto)
-    if resposta:
-        print("Atendente:", resposta)
-    else:
-        print("Não consegui responder agora. Tente de novo em alguns minutos.")
+    while True:
+        texto = input("Você: ").strip()
+        if texto.lower() == "sair":
+            break
+        if not texto:
+            continue
+        resposta = perguntar(texto)
+        if resposta:
+            print("Atendente:", resposta)
+        else:
+            print("Não consegui responder agora. Tente de novo em alguns minutos.")
+
+
+if __name__ == "__main__":
+    main()
